@@ -73,7 +73,7 @@ class MaxHeap():
                 
 
 s = Solution()
-a = [1,4,5,6,8,10,11,14,15,28]
-b = [2,3,5,6,7,8,10,11,14,15,16,19,29]
+a = [1,2]
+b = [3,4]
 
 print(s.findMedianSortedArrays(a,b))
