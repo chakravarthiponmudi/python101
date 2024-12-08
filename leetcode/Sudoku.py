@@ -36,43 +36,35 @@ class Solution(object):
         
         for num in self.getNumber(i,j):
             board[i][j] = num
-            self.colset[j].remove(num)
-            self.rowset[i].remove(num)
+            self.tryAndRemove(self.colset[j],num)
+            self.tryAndRemove(self.rowset[i],num)
             cube = int(j/3) + int(i/3)*3
-            self.cubeset[cube].remove(num)
+            self.tryAndRemove(self.cubeset[cube],num) 
+            
             isSolved = self.__solve(board,i,j+1)
             if isSolved:
                 return True
             board[i][j]='.'
             self.colset[j].add(num)
             self.rowset[i].add(num)
-            cube = int(j/3) + int(i/3)*3
             self.cubeset[cube].add(num)
+            
             
         return False
     
-    def getNumber(self,i,j):
-        cube = int(j/3) + int(i/3)*3
-        return self.colset[j].union(self.rowset[i]).union(self.cubeset[cube]) 
-
-        
-    
-    def isValid(self,board, i ,j, n):
-        if n in board[i]:
+    def tryAndRemove(self,rset,n) :
+        try:
+            rset.remove(n)
+            return True
+        except:
             return False
         
-        for r in range(9):
-            if n == board[r][j]:
-                return False
-        cubeRow = int(math.floor(i/3)*3)
-        cubeCol = int(math.floor(j/3)*3)
+    def getNumber(self,i,j):
+        cube = j//3 + i//3*3
+        return self.colset[j].intersection(self.rowset[i]).intersection(self.cubeset[cube]) 
+
         
-        for r in range(cubeRow, cubeRow+3):
-            for c in range(cubeCol, cubeCol+3):
-                if (n==board[r][c]):
-                    return False;
-        
-        return True
+
         
 s = Solution()
 s.solveSudoku([[".",".",".",".",".",".",".",".","."],[".","9",".",".","1",".",".","3","."],[".",".","6",".","2",".","7",".","."],[".",".",".","3",".","4",".",".","."],["2","1",".",".",".",".",".","9","8"],[".",".",".",".",".",".",".",".","."],[".",".","2","5",".","6","4",".","."],[".","8",".",".",".",".",".","1","."],[".",".",".",".",".",".",".",".","."]])
